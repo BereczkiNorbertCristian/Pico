@@ -2,47 +2,51 @@
 
 class ArgumentsParser
 
-	def initialize(options)
-		@options  = Hash.new(options)
-		@argNames = initArgNames()
+	@@OPTION_NAMES_FILE = "optionNames.config"
+	@@PICO_DIR_KEY = "picodir"
+	@@UNIX_DELIMITER = "/"
+
+	#options represents the default options
+	def initialize(configOptions)
+		@options  = deepcopy(configOptions)
+		@options.delete(@@PICO_DIR_KEY)
+		@argNames = initArgNames(configOptions)
 	end
 
 	def parse(cliArguments)
 
+		ret = deepcopy(@options)
 		cliArguments.each do |arg|
 			key,val = arg.split(/=/)
-			@options[@argNames[key]] = val
+			raise ArgumentError,
+				"Option #{key} not valid." unless @argNames.has_key?(key)
+			if val == nil then next
+			end
+			ret[@argNames[key]] = val
 		end	
-		return @options
+		return ret
 	end
 
-	def initArgNames()
-	
-
-		# TODO Move this into a separate file
+	def initArgNames(options)
 
 		ret = {}
-		ret["--env"]  		= "env"
-		ret["-e"]     		= "env"
-		ret["--contest"] 	= "contest"
-		ret["-c"] 		= "contest"
-		ret["--number"]		= "number"
-		ret["-n"]		= "number"
-		ret["--lang"] 		= "lang"
-		ret["-l"] 		= "lang"
-		ret["--make"] 		= "make"
-		ret["-m"] 		= "make"
-		ret["--reload"] 	= "reload"
-		ret["-r"] 		= "reload"
-		ret["--problem"] 	= "problem"
-		ret["-p"] 		= "problem"
-		ret["--test"] 		= "test"
-		ret["-t"] 		= "test"
-		ret["--auth"] 		= "auth"
-		ret["-a"] 		= "auth"
-		ret["--username"] 	= "username"
-		ret["-u"] 		= "username"
-		ret["--password"] 	= "password"
-		ret["-pass"] 		= "password"
+		absolutePathToOptionNames = prepareAbsolutePathToFile(@@OPTION_NAMES_FILE,options)
+		puts absolutePathToOptionNames
+		File.open(absolutePathToOptionNames).each do |line|
+			key,val = line.strip.split(/=/)
+			ret[key] = val
+		end
+		return ret
 	end
+
+	def prepareAbsolutePathToFile(file,options)
+	
+		return options[@@PICO_DIR_KEY] + @@UNIX_DELIMITER + file
+	end
+
+	def deepcopy(obj)
+		return Marshal.load(Marshal.dump(obj))
+	end
+
 end
+
