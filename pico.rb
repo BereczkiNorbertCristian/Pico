@@ -47,10 +47,17 @@ rescue ArgumentError => ae
 	exit
 end
 
+p configOptions
+p options
 
 if options.has_key?(@@ENV_KEY) then
-	creator = EnvCreator.new
-	creator.createEnv()
+	begin
+		creator = EnvCreator.new(configOptions,options)
+		creator.createEnv()
+	rescue Exception => e
+		p e
+		Dir.delete(options[@@ENV_KEY])
+	end
 end
 
 
