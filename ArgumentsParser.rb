@@ -1,10 +1,9 @@
 
+require_relative "Constants.rb"
 
 class ArgumentsParser
 
-	@@OPTION_NAMES_FILE = "optionNames.config"
-	@@PICO_DIR_KEY = "picodir"
-	@@UNIX_DELIMITER = "/"
+	@@OPTION_NAMES_FILE = "OptionNames.config"
 
 	#options represents the default options
 	def initialize(configOptions)
@@ -41,7 +40,7 @@ class ArgumentsParser
 
 	def prepareAbsolutePathToFile(file,options)
 	
-		return options[@@PICO_DIR_KEY] + @@UNIX_DELIMITER + file
+		return options[@@PICO_DIR_KEY] + @@UNIX_DELIM + file
 	end
 
 	def deepcopy(obj)

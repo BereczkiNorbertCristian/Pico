@@ -7,12 +7,15 @@ require "open-uri"
 require "fileutils"
 require "optparse"
 
+require_relative "ArgumentsParser.rb"
+require_relative "EnvCreator.rb"
+require_relative "CodeforcesEnvCreator.rb"
+require_relative "Constants.rb"
+require_relative "CreatorChooser.rb"
+
 #---------------------------- CONSTANTS ----------------------------
 
 @@PATH_TO_PICO_CONFIG 	= "#{Dir.home}/.pico"
-@@PICO_DIR_KEY 		= "picodir"
-@@ENV_KEY 		= "env"
-@@CURRENT_DIR_KEY	= "currdir"
 
 #---------------------------- FUNCTIONS ----------------------------
 
@@ -31,10 +34,6 @@ end
 
 configOptions = getConfigOptions()
 configOptions[@@CURRENT_DIR_KEY] = Dir.pwd.to_s
-PATH_TO_PICO_HOME_DIR = configOptions[@@PICO_DIR_KEY]
-
-require "#{PATH_TO_PICO_HOME_DIR}/argumentsparser.rb"
-require "#{PATH_TO_PICO_HOME_DIR}/envCreator.rb"
 
 #----------------------------- PROCESSING --------------------------
 
@@ -47,16 +46,21 @@ rescue ArgumentError => ae
 	exit
 end
 
-p configOptions
-p options
-
 if options.has_key?(@@ENV_KEY) then
 	begin
-		creator = EnvCreator.new(configOptions,options)
+		chooser = EnvCreatorChooser.new
+		creator = chooser.choose(configOptions,options)
 		creator.createEnv()
 	rescue Exception => e
-		p e
+		puts e
 		Dir.delete(options[@@ENV_KEY])
+	end
+else if options.has_key?(@@TEST_KEY) then
+	begin
+		tester = FormalTester.new
+		puts tester.test(options)
+	rescue Exception => e
+		puts e
 	end
 end
 

@@ -2,27 +2,13 @@
 require "nokogiri"
 require "open-uri"
 
-class EnvCreator
+require_relative "EnvCreator.rb"
+require_relative "Constants.rb"
 
-	@@ENV_KEY 		= "env"
-	@@LANG_KEY 		= "lang"
-	@@CONTEST_KEY 		= "contest"
-	@@NUMBER_KEY 		= "number"
-	@@TMP_FILE_NAME 	= "tmp.config"
-	@@PICO_DIR_KEY  	= "picodir"
-	@@CURRENT_DIR_KEY 	= "currdir"
+class CodeforcesEnvCreator < EnvCreator
 	
-	@@EQ_DELIM 	= "="
-	@@NEW_LINE 	= "\n"
-	@@UNIX_DELIM 	= "/"
-	@@IN_SUFFIX 	= "in"
-	@@OUT_SUFFIX 	= "out"
 	@@FIRST_CHAR 	= 0
-	@@a		= 97
-	@@IN_CLASS	= "input"
-	@@OUT_CLASS	= "output"
-	@@TESTS_FOLDER 	= "Tests"
-
+	
 	def initialize(configOptions,options)
 		@configOptions = configOptions
 		@options = options

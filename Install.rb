@@ -12,7 +12,7 @@ NAME_PASSWORD  = "password"
 
 DEFAULT_PICO_PATH   = Dir.pwd.to_s
 DEFAULT_CONTEST    = "codeforces"
-DEFAULT_LANG       = "c++"
+DEFAULT_LANG       = "cpp"
 DEFAULT_PROBLEM    = "all"
 DEFAULT_USERNAME   = "brcz"
 DEFAULT_PASSWORD   = "********"
