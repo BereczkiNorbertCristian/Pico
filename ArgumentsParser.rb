@@ -19,7 +19,7 @@ class ArgumentsParser
 			key,val = arg.split(/=/)
 			raise ArgumentError,
 				"Option #{key} not valid." unless @argNames.has_key?(key)
-			if val == nil then next
+			if val == nil and ret.has_key? key then next
 			end
 			ret[@argNames[key]] = val
 		end	

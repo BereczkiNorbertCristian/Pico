@@ -19,15 +19,14 @@ class FormalTester < Tester
 	def test(options)
 		
 		pbSource = prepareProblemName(options)
-		pbLetter = getProblemLetter(pbFile)
-		
+		pbLetter = getProblemLetter(pbSource)
 		testsFolder = options[@@ENV_KEY] + @@UNIX_DELIM + @@TESTS_FOLDER
-
+		
 		res = ""
 		testNo = 0
 		Dir.foreach(testsFolder) do |file|
-			if file.include? pbLetter and file.include? @@IN_SUFFIX then
-				res += doTest(options,testsFolder,pbSource,pbLetter,testNo)
+			if file.include? pbLetter.upcase and file.include? @@IN_SUFFIX then
+				res += doTest(options,testsFolder,pbSource,pbLetter,testNo,file)
 				testNo+=1
 			end
 		end
@@ -36,12 +35,12 @@ class FormalTester < Tester
 	end
 
 	private
-	def doTest(options,testsFolder,pbSource,pbLetter,testNo)
+	def doTest(options,testsFolder,pbSource,pbLetter,testNo,file)
 		
 		FileUtils.cp("#{testsFolder}/#{file}","#{options[@@ENV_KEY]}/#{@@INPUT_FILE}")
 		executionResult = doExecute(options,pbSource,pbLetter)
-		expectedOutput = extractExpectedOutput(testsFolder,pbLetter)
-		
+		expectedOutput = extractExpectedOutput(testsFolder,pbLetter,testNo)
+
 		return makeComparison(options,executionResult,expectedOutput,pbLetter,testNo)
 	end
 
@@ -66,8 +65,8 @@ class FormalTester < Tester
 	end
 
 	private
-	def extractExpectedOutput(testsFolder,pbLetter)
-		return File.open("#{testsFolder}/#{pbLetter}.#{@@IN_SUFFIX}").read()
+	def extractExpectedOutput(testsFolder,pbLetter,testNo)
+		return File.open("#{testsFolder}/#{pbLetter.upcase}#{testNo}.#{@@OUT_SUFFIX}").read()
 	end
 
 	private 

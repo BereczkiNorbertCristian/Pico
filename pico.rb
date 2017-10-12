@@ -12,10 +12,12 @@ require_relative "EnvCreator.rb"
 require_relative "CodeforcesEnvCreator.rb"
 require_relative "Constants.rb"
 require_relative "CreatorChooser.rb"
+require_relative "FormalTester.rb"
 
 #---------------------------- CONSTANTS ----------------------------
 
 @@PATH_TO_PICO_CONFIG 	= "#{Dir.home}/.pico"
+@@TMP_CONFIG_FILE	= "Tmp.config"
 
 #---------------------------- FUNCTIONS ----------------------------
 
@@ -34,10 +36,16 @@ end
 
 configOptions = getConfigOptions()
 configOptions[@@CURRENT_DIR_KEY] = Dir.pwd.to_s
-
+picoDir = configOptions[@@PICO_DIR_KEY]
 #----------------------------- PROCESSING --------------------------
 
 argumentsParser = ArgumentsParser.new(configOptions)
+
+tmpConfigFilePath = "#{picoDir}/#{@@TMP_CONFIG_FILE}"
+
+unless File.zero? tmpConfigFilePath
+	oldOptions = Marshal.load(File.open(tmpConfigFilePath).read())
+end
 
 begin
 	options = argumentsParser.parse(ARGV)
@@ -51,21 +59,23 @@ if options.has_key?(@@ENV_KEY) then
 		chooser = EnvCreatorChooser.new
 		creator = chooser.choose(configOptions,options)
 		creator.createEnv()
+		File.write(tmpConfigFilePath,Marshal.dump(options))
 	rescue Exception => e
 		puts e
 		Dir.delete(options[@@ENV_KEY])
 	end
-else if options.has_key?(@@TEST_KEY) then
+elsif options.has_key?(@@TEST_KEY) then
 	begin
+
+		unless options.has_key? @@ENV_KEY
+		options[@@ENV_KEY] = oldOptions[@@ENV_KEY]
+		end
+
 		tester = FormalTester.new
 		puts tester.test(options)
 	rescue Exception => e
 		puts e
 	end
 end
-
-
-p configOptions
-p options
 
 
