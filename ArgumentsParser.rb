@@ -3,6 +3,8 @@ require_relative "Constants.rb"
 
 class ArgumentsParser
 
+	include Constants
+
 	@@OPTION_NAMES_FILE = "OptionNames.config"
 
 	#options represents the default options

@@ -6,6 +6,8 @@ require_relative "EnvCreator.rb"
 require_relative "Constants.rb"
 
 class CodeforcesEnvCreator < EnvCreator
+
+	include Constants
 	
 	@@FIRST_CHAR 	= 0
 	
@@ -64,7 +66,8 @@ class CodeforcesEnvCreator < EnvCreator
 		
 		numberOfProblems.times { |i|
 			pb = (@@a + i).chr
-			File.write("#{@options[@@ENV_KEY]}/#{pb}.#{@options[@@LANG_KEY]}",'')
+			sourcePath = "#{@options[@@ENV_KEY]}/#{pb}.#{@options[@@LANG_KEY]}"
+			File.write(sourcePath,'') unless File.exists?(sourcePath)
 		}
 	end
 

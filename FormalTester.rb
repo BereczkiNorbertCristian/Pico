@@ -11,6 +11,8 @@ require_relative "SourceExecutor.rb"
 # TODO: Floating point comparison
 
 class FormalTester < Tester
+
+	include Constants
 	
 	@@INPUT_FILE 	= "input.in"
 	@@CPP_FILE	= "cpp"
@@ -47,7 +49,7 @@ class FormalTester < Tester
 	private
 	def makeComparison(options,executionResult,expectedOutput,pbLetter,testNo)
 		
-		formattedResult = "Problem: #{pbLetter}, Test #{testNo}: "
+		formattedResult = "Problem: #{pbLetter}, Test #{testNo}: ".yellow
 		good = "Wrong!".red
 
 		if executionResult.split("\n") == expectedOutput.split("\n") then

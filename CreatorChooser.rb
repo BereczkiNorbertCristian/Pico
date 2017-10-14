@@ -4,6 +4,8 @@ require_relative "CodeforcesEnvCreator.rb"
 
 class EnvCreatorChooser
 
+	include Constants
+
 	@@CODEFORCES_NAME = "codeforces"
 
 	def choose(configOptions,options)

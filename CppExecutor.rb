@@ -1,7 +1,10 @@
 
 require_relative "SourceExecutor.rb"
+require_relative "Constants.rb"
 
 class CppExecutor < SourceExecutor
+
+	include Constants
 
 	def execute(options,pbSource,pbLetter)
 

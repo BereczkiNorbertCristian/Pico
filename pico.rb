@@ -14,12 +14,9 @@ require_relative "Constants.rb"
 require_relative "CreatorChooser.rb"
 require_relative "FormalTester.rb"
 
-#---------------------------- CONSTANTS ----------------------------
+class Main
+	include Constants
 
-@@PATH_TO_PICO_CONFIG 	= "#{Dir.home}/.pico"
-@@TMP_CONFIG_FILE	= "Tmp.config"
-
-#---------------------------- FUNCTIONS ----------------------------
 
 def getConfigOptions()
 		
@@ -30,6 +27,13 @@ def getConfigOptions()
 	end
 	return configOptions
 end
+	def run()
+#---------------------------- CONSTANTS ----------------------------
+
+	@@PATH_TO_PICO_CONFIG 	= "#{Dir.home}/.pico"
+	@@TMP_CONFIG_FILE	= "Tmp.config"
+
+#---------------------------- FUNCTIONS ----------------------------
 
 #------------------------------ CONFIGS --------------------------------
 
@@ -78,4 +82,7 @@ elsif options.has_key?(@@TEST_KEY) then
 	end
 end
 
-
+end
+end
+main = Main.new
+main.run()
