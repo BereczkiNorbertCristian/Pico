@@ -25,12 +25,19 @@ class CodeforcesEnvCreator < EnvCreator
 		createTests(numberOfProblems)
 	end
 
+	def reloadTests()
+		numberOfProblems = getNumberOfProblems()
+		createTests(numberOfProblems)	
+	end
+
+	private
 	def createEmptyInputFile()
 
 		filepath = "#{@options[@@ENV_KEY]}/input.in"
 		File.write(filepath,"") unless File.exists?(filepath)
 	end
 
+	private
 	def createTests(numberOfProblems)
 
 		numberOfProblems.times { |i| 
@@ -41,6 +48,7 @@ class CodeforcesEnvCreator < EnvCreator
 		}
 	end
 
+	private
 	def createTestsForProblem(pb,doc,type,suffix)
 		nr = 0
 		testsDir = "#{@options[@@ENV_KEY]}/#{@@TESTS_FOLDER}"
@@ -52,6 +60,7 @@ class CodeforcesEnvCreator < EnvCreator
 		end
 	end
 
+	private
 	def processEnvPath()
 
 		currentEnvPath = @options[@@ENV_KEY]
@@ -62,6 +71,7 @@ class CodeforcesEnvCreator < EnvCreator
 		Dir.mkdir(currentEnvPath) unless File.exists?(currentEnvPath)
 	end
 
+	private
 	def createEmptySources(numberOfProblems)
 		
 		numberOfProblems.times { |i|
@@ -71,6 +81,7 @@ class CodeforcesEnvCreator < EnvCreator
 		}
 	end
 
+	private
 	def saveEnvConfig()
 		toPut = ""
 		toPut += @@CONTEST_KEY + @@EQ_DELIM + @options[@@CONTEST_KEY] + @@NEW_LINE
@@ -81,15 +92,18 @@ class CodeforcesEnvCreator < EnvCreator
 		File.write("#{@configOptions[@@PICO_DIR_KEY]}/#{@@TMP_FILE_NAME}",toPut)
 	end
 
+	private
 	def getNumberOfProblems()
 		doc = Nokogiri::HTML(open(prepareContestLink()))
 		return doc.xpath("//td[@class='act']").size
 	end
 	
+	private
 	def prepareProblemLink(pb)
 		return "#{prepareContestLink()}/problem/#{pb}"
 	end
 
+	private
 	def prepareContestLink()
 		return "http://codeforces.com/contest/#{@options[@@NUMBER_KEY]}"
 	end

@@ -28,12 +28,17 @@ class FormalTester < Tester
 		testNo = 0
 		Dir.foreach(testsFolder) do |file|
 			if file.include? pbLetter.upcase and file.include? @@IN_SUFFIX then
-				res += doTest(options,testsFolder,pbSource,pbLetter,testNo,file)
-				testNo+=1
+				problemNo = getFilenameNumber(file)	
+				res += doTest(options,testsFolder,pbSource,pbLetter,problemNo,file)
 			end
 		end
 		
 		return res
+	end
+
+	private
+	def getFilenameNumber(filename)
+		return filename.gsub(/(.in)|(.out)/,"").gsub(/([A-Z])|([a-z])/,"")
 	end
 
 	private
@@ -52,9 +57,24 @@ class FormalTester < Tester
 		formattedResult = "Problem: #{pbLetter}, Test #{testNo}: ".yellow
 		good = "Wrong!".red
 
-		if executionResult.split("\n") == expectedOutput.split("\n") then
+		ok = true
+		executionResultLines = executionResult.split("\n")
+		expectedOutputLines = expectedOutput.split("\n")
+		
+		if executionResultLines.size != expectedOutputLines.size then
+			ok = false
+		else
+			executionResultLines.size.times { |i|
+				ok &= executionResultLines[i].strip == expectedOutputLines[i].strip
+			}
+		end
+
+		if ok then
 			good = "OK!".green
 		end
+		#if executionResult.split("\n") == expectedOutput.split("\n") then
+		#	good = "OK!".green
+		#end
 		formattedResult += good + "\n"
 		if options.has_key? @@DIFF_KEY then
 			formattedResult += "Your Output:\n"

@@ -11,6 +11,8 @@ module Constants
 	@@TEST_KEY		= "test"
 	@@PROBLEM_KEY		= "problem"
 	@@DIFF_KEY		= "diff"
+	@@RELOAD_KEY		= "reload"
+	@@STATUS_KEY		= "status"
 
 	@@EQ_DELIM 		= "="
 	@@NEW_LINE 		= "\n"
