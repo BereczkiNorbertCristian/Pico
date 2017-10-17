@@ -70,6 +70,7 @@ class Main
 				creator = chooser.choose(configOptions,options)
 				creator.createEnv()
 				File.write(tmpConfigFilePath,Marshal.dump(options))
+				puts "Environment created".green
 			rescue Exception => e
 				puts e
 				Dir.delete(options[@@ENV_KEY])
@@ -90,6 +91,7 @@ class Main
 				chooser = EnvCreatorChooser.new
 				creator = chooser.choose(configOptions,oldOptions)
 				creator.reloadTests()
+				puts "Reloaded successfully".green
 			rescue Exception => e
 				puts e
 			end

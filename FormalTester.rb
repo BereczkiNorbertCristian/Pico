@@ -19,7 +19,7 @@ class FormalTester < Tester
 	@@PYTHON_FILE	= "py"
 
 	def test(options)
-		
+	
 		pbSource = prepareProblemName(options)
 		pbLetter = getProblemLetter(pbSource)
 		testsFolder = options[@@ENV_KEY] + @@UNIX_DELIM + @@TESTS_FOLDER
@@ -27,7 +27,7 @@ class FormalTester < Tester
 		res = ""
 		testNo = 0
 		Dir.foreach(testsFolder) do |file|
-			if file.include? pbLetter.upcase and file.include? @@IN_SUFFIX then
+			if file.include? pbLetter.upcase and file.include? @@IN_SUFFIX and (options[@@TEST_KEY] == nil or getFilenameNumber(file)==options[@@TEST_KEY]) then
 				problemNo = getFilenameNumber(file)	
 				res += doTest(options,testsFolder,pbSource,pbLetter,problemNo,file)
 			end
