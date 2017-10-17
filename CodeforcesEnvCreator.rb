@@ -9,7 +9,8 @@ class CodeforcesEnvCreator < EnvCreator
 
 	include Constants
 	
-	@@FIRST_CHAR 	= 0
+	@@FIRST_CHAR 		= 0
+	@@CPP_TEMPLATE_FILE	= "Template.cpp"
 	
 	def initialize(configOptions,options)
 		@configOptions = configOptions
@@ -73,11 +74,12 @@ class CodeforcesEnvCreator < EnvCreator
 
 	private
 	def createEmptySources(numberOfProblems)
-		
+	
+		toWrite = File.open("#{@configOptions[@@PICO_DIR_KEY]}/#{@@CPP_TEMPLATE_FILE}").read()
 		numberOfProblems.times { |i|
 			pb = (@@a + i).chr
 			sourcePath = "#{@options[@@ENV_KEY]}/#{pb}.#{@options[@@LANG_KEY]}"
-			File.write(sourcePath,'') unless File.exists?(sourcePath)
+			File.write(sourcePath,toWrite) unless File.exists?(sourcePath)
 		}
 	end
 

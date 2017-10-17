@@ -32,7 +32,6 @@ class ArgumentsParser
 
 		ret = {}
 		absolutePathToOptionNames = prepareAbsolutePathToFile(@@OPTION_NAMES_FILE,options)
-		puts absolutePathToOptionNames
 		File.open(absolutePathToOptionNames).each do |line|
 			key,val = line.strip.split(/=/)
 			ret[key] = val
