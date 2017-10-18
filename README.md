@@ -24,7 +24,7 @@ Be careful, there is still work to be done.
 		pico env=foo441 n=876
 	```
 - your program should read from input.in and should print to the standard output(the default template does that)
-- test a problem (for now works only with cpp sources)
+- test a problem (for now works only with cpp sources with -std=c++11)
 - MUST cd environment to run tests in that environment!
 	```
 		pico --test --problem=a.cpp
