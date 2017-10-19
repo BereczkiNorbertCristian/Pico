@@ -10,7 +10,7 @@ Be careful, there is still work to be done.
 	`git clone https://github.com/BereczkiNorbertCristian/Pico.git`
 	
 - run install script (which will create a folder .pico in your home directory)
-	`./install.rb`
+	`sudo ruby Install.rb`
 - also in your bashrc or zshrc put an alias to pico.sh with the name pico
 
 ## How it works?
