@@ -1,4 +1,4 @@
-# Pico
+# Pico (Programming In COmpetitions)
 CLI tester for competitive programming contests.
 
 Be careful, there is still work to be done.
